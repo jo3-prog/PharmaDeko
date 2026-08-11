@@ -1,0 +1,1890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharma-Deko Plc</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ==================== AUTH MODAL ==================== -->
+<div id="auth-modal" class="modal-overlay hidden">
+    <div class="modal-container">
+        <button class="modal-close" onclick="closeAuthModal()"><i class="fas fa-times"></i></button>
+        <div class="modal-left">
+            <div class="modal-brand">
+                <div class="logo-text">PHARMA<br><span>DEKO</span> PLC</div>
+                <div class="logo-tagline">...Providing Healthy Solutions</div>
+            </div>
+            <div class="modal-left-content">
+                <h2>Your health,<br>delivered.</h2>
+                <p>Create an account to order genuine PharmaDeko products manufactured at our Agbara facility, trusted by Nigerians for over 50 years.</p>
+            </div>
+        </div>
+        <div class="modal-right">
+            <div id="auth-welcome" class="auth-screen">
+                <h2>Welcome to Pharma-Deko</h2>
+                <p class="auth-subtitle">Sign in to your account or create one to start ordering.</p>
+                <button class="btn btn-primary btn-full" onclick="showAuthScreen('signup-step1')">Create an account</button>
+                <button class="btn btn-outline btn-full" onclick="showAuthScreen('signin')">Sign in to existing account</button>
+                <div class="auth-divider"><span>or</span></div>
+                <p class="auth-sales">Ordering as a distributor or hospital? <a href="#">Contact our sales team →</a></p>
+                <p class="auth-terms">By continuing, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+            </div>
+            <div id="auth-signup-step1" class="auth-screen hidden">
+                <div class="step-indicator">
+                    <span>Step 1 of 3 — Personal details</span>
+                    <div class="step-dots"><span class="active"></span><span></span><span></span></div>
+                </div>
+                <form id="signup-form-1" onsubmit="return handleSignupStep1(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>FIRST NAME</label>
+                            <input type="text" id="su-firstname" placeholder="">
+                            <span class="error-msg" id="err-firstname">First name is required</span>
+                        </div>
+                        <div class="form-group">
+                            <label>LAST NAME</label>
+                            <input type="text" id="su-lastname" placeholder="">
+                            <span class="error-msg" id="err-lastname">Last name is required</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>EMAIL ADDRESS</label>
+                        <input type="email" id="su-email" placeholder="">
+                        <span class="hint">We'll send your order confirmations here</span>
+                        <span class="error-msg" id="err-email">Enter a valid email address</span>
+                    </div>
+                    <div class="form-group">
+                        <label>PHONE NUMBER</label>
+                        <div class="phone-input">
+                            <span class="phone-prefix">🇳🇬 +234</span>
+                            <input type="tel" id="su-phone" placeholder="801 234 5678">
+                        </div>
+                        <span class="hint">For OTP verification and delivery updates</span>
+                        <span class="error-msg" id="err-phone">Phone number is required</span>
+                    </div>
+                    <div class="form-group">
+                        <label>PASSWORD</label>
+                        <div class="password-input">
+                            <input type="password" id="su-password" placeholder="••••••••">
+                            <button type="button" class="toggle-pw" onclick="togglePassword('su-password')"><i class="far fa-eye"></i></button>
+                        </div>
+                        <span class="hint">Minimum 8 characters, include a number and symbol</span>
+                        <span class="error-msg" id="err-password">Include at least one symbol</span>
+                    </div>
+                    <div class="form-group">
+                        <label>CONFIRM PASSWORD</label>
+                        <div class="password-input">
+                            <input type="password" id="su-confirm" placeholder="••••••••">
+                            <button type="button" class="toggle-pw" onclick="togglePassword('su-confirm')"><i class="far fa-eye"></i></button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Continue →</button>
+                    <p class="auth-footer">Already have an account? <a href="#" onclick="showAuthScreen('signin')">Sign in</a></p>
+                </form>
+            </div>
+            <div id="auth-signup-step2" class="auth-screen hidden">
+                <div class="step-indicator">
+                    <span>Step 2 of 3 — Verify your identity</span>
+                    <div class="step-dots"><span></span><span class="active"></span><span></span></div>
+                </div>
+                <h3>How would you like to verify?</h3>
+                <p class="auth-subtitle">We'll send a one-time code to confirm your identity. Choose your preferred method.</p>
+                <div class="verify-options">
+                    <label class="verify-option active">
+                        <input type="radio" name="verify-method" value="email" checked>
+                        <div class="verify-content">
+                            <div class="verify-icon"><i class="far fa-envelope"></i></div>
+                            <div class="verify-text">
+                                <strong>Verify via Gmail / Email <span class="badge">Recommended</span></strong>
+                                <span>We'll send a 6-digit OTP to fu***@gmail.com</span>
+                            </div>
+                        </div>
+                    </label>
+                    <label class="verify-option">
+                        <input type="radio" name="verify-method" value="sms">
+                        <div class="verify-content">
+                            <div class="verify-icon"><i class="fas fa-mobile-alt"></i></div>
+                            <div class="verify-text">
+                                <strong>Verify via Phone number (SMS)</strong>
+                                <span>We'll send a 6-digit OTP to +234 *** *** 2321</span>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+                <button class="btn btn-primary btn-full" onclick="showAuthScreen('signup-otp')">Send OTP →</button>
+                <p class="auth-footer"><a href="#" onclick="showAuthScreen('signup-step1')">← Back to personal details</a></p>
+            </div>
+            <div id="auth-signup-otp" class="auth-screen hidden">
+                <div class="step-indicator">
+                    <span>Step 2 of 3 — Email verification</span>
+                    <div class="step-dots"><span></span><span class="active"></span><span></span></div>
+                </div>
+                <div class="otp-icon"><i class="far fa-envelope"></i></div>
+                <h3>Check your inbox</h3>
+                <p class="auth-subtitle">We sent a 6-digit code to fu***@gmail.com. Enter it below.<br><small>(Hint: use 123456 to demo)</small></p>
+                <div class="otp-inputs">
+                    <input type="text" maxlength="1" class="otp-digit" oninput="moveOtp(this, 0)">
+                    <input type="text" maxlength="1" class="otp-digit" oninput="moveOtp(this, 1)">
+                    <input type="text" maxlength="1" class="otp-digit" oninput="moveOtp(this, 2)">
+                    <input type="text" maxlength="1" class="otp-digit" oninput="moveOtp(this, 3)">
+                    <input type="text" maxlength="1" class="otp-digit" oninput="moveOtp(this, 4)">
+                    <input type="text" maxlength="1" class="otp-digit" oninput="moveOtp(this, 5)">
+                </div>
+                <span class="error-msg" id="err-otp">Incorrect code. 0 attempts remaining.</span>
+                <p class="otp-timer">Code expires in <span id="otp-timer">04:30</span></p>
+                <p class="otp-resend">Didn't receive a code? <a href="#">Resend in <span id="resend-timer">00:43</span></a></p>
+                <button class="btn btn-primary btn-full" onclick="handleOtpVerify()">Verify email →</button>
+                <p class="auth-footer"><a href="#" onclick="showAuthScreen('signup-step2')">← Try a different verification method</a></p>
+            </div>
+            <div id="auth-signup-step3" class="auth-screen hidden">
+                <div class="step-indicator">
+                    <span>Step 3 of 3 — Delivery details</span>
+                    <div class="step-dots"><span></span><span></span><span class="active"></span></div>
+                </div>
+                <p class="auth-subtitle">Almost done. Add a default delivery address so checkout is faster.</p>
+                <form onsubmit="return handleSignupStep3(event)">
+                    <div class="form-group">
+                        <label>DELIVERY ADDRESS OR STREET</label>
+                        <input type="text" placeholder="12 Samuel Crescent, Abuja">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>CITY</label>
+                            <input type="text" placeholder="Abuja">
+                        </div>
+                        <div class="form-group">
+                            <label>STATE</label>
+                            <input type="text" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>CLOSEST LANDMARK (OPTIONAL)</label>
+                        <input type="text" placeholder="Near BAT, Abuja">
+                        <span class="hint">Helps our delivery partners find you faster</span>
+                    </div>
+                    <div class="form-group">
+                        <label>ACCOUNT TYPE</label>
+                        <div class="account-types">
+                            <label class="acct-type active"><input type="radio" name="acct-type" value="individual" checked><span>Individual</span></label>
+                            <label class="acct-type"><input type="radio" name="acct-type" value="hospital"><span>Hospital</span></label>
+                            <label class="acct-type"><input type="radio" name="acct-type" value="pharmacy"><span>Pharmacy</span></label>
+                            <label class="acct-type"><input type="radio" name="acct-type" value="distributor"><span>Distributor</span></label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Create my account →</button>
+                    <p class="auth-footer"><a href="#" onclick="showAuthScreen('signup-success')">Skip for now — I'll add this later</a></p>
+                </form>
+            </div>
+            <div id="auth-signup-success" class="auth-screen hidden">
+                <div class="success-icon"><i class="fas fa-check"></i></div>
+                <h3>Welcome to Pharma-Deko!</h3>
+                <p class="auth-subtitle">Your account has been created successfully. You can now order genuine PharmaDeko products.</p>
+                <div class="success-details">
+                    <div class="detail-row"><span>Name</span><strong>Fumnaya Samuel</strong></div>
+                    <div class="detail-row"><span>Email</span><strong>fumnaya@gmail.com</strong></div>
+                    <div class="detail-row"><span>Phone</span><strong>+234 12321232321</strong></div>
+                    <div class="detail-row"><span>Account type</span><strong>Individual</strong></div>
+                </div>
+                <button class="btn btn-outline btn-full" onclick="closeAuthModal(); navigateTo('my-orders')">Go to my account</button>
+                <button class="btn btn-primary btn-full" onclick="closeAuthModal(); navigateTo('shop')">Start shopping →</button>
+                <p class="auth-terms">A welcome email has been sent to fumnaya@gmail.com</p>
+            </div>
+            <div id="auth-signin" class="auth-screen hidden">
+                <h2>Sign in to your account</h2>
+                <p class="auth-subtitle">Welcome back. Enter your details to continue.</p>
+                <form onsubmit="return handleSignin(event)">
+                    <div class="form-group">
+                        <label>EMAIL ADDRESS OR PHONE NUMBER</label>
+                        <input type="text" id="si-email" placeholder="your@gmail.com">
+                        <span class="hint">You can sign in with your email or +234 phone number</span>
+                        <span class="error-msg" id="err-si-email">Please enter your email/phone and password.</span>
+                    </div>
+                    <div class="form-group">
+                        <div class="label-row">
+                            <label>PASSWORD</label>
+                            <a href="#" class="forgot-link">Forgot password?</a>
+                        </div>
+                        <div class="password-input">
+                            <input type="password" id="si-password" placeholder="••••••••">
+                            <button type="button" class="toggle-pw" onclick="togglePassword('si-password')"><i class="far fa-eye"></i></button>
+                        </div>
+                        <span class="hint"><i class="fas fa-lock"></i> Secured with 256-bit encryption</span>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Sign in →</button>
+                    <div class="auth-divider"><span>or</span></div>
+                    <button type="button" class="btn btn-google btn-full"><img src="https://www.google.com/favicon.ico" alt=""> Continue with Google</button>
+                    <p class="auth-footer">Don't have an account? <a href="#" onclick="showAuthScreen('signup-step1')">Create one →</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== LANDING PAGE ==================== -->
+<div id="page-home" class="page">
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-left">
+                <span><i class="fas fa-phone-alt"></i> +2348169622189</span>
+                <span class="sep">|</span>
+                <span>Est 1970</span>
+            </div>
+            <div class="top-bar-right">
+                <span><i class="fas fa-certificate"></i> First in Nigeria ISO certification</span>
+            </div>
+        </div>
+    </div>
+    <header class="main-header">
+        <div class="container header-inner">
+            <a href="#" class="logo" onclick="navigateTo('')">
+                <div class="logo-text">PHARMA<br><span>DEKO</span> PLC</div>
+                <div class="logo-tagline">...Providing Healthy Solutions</div>
+            </a>
+            <div class="header-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search Pharma-Deko products...">
+            </div>
+            <div class="header-actions">
+                <a href="#" onclick="openAuthModal()"><i class="far fa-user"></i> Account</a>
+                <a href="#cart" onclick="navigateTo('cart')">
+                    <i class="fas fa-shopping-cart"></i> Cart
+                    <span class="cart-badge">99</span>
+                </a>
+            </div>
+        </div>
+        <nav class="main-nav">
+            <div class="container">
+                <a href="#" onclick="navigateTo('')" class="active">Home Page</a>
+                <a href="#about" onclick="scrollToSection('about')">About Us</a>
+                <a href="#products" onclick="scrollToSection('products')">Products</a>
+                <a href="#events">Events</a>
+                <a href="#shop" onclick="navigateTo('shop')">Order Online</a>
+                <a href="#careers" onclick="scrollToSection('careers')">Career</a>
+                <a href="#footer" onclick="scrollToSection('footer')">Contact Us</a>
+                <a href="#faq" onclick="scrollToSection('faq')">FAQ</a>
+            </div>
+        </nav>
+    </header>
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="container hero-content">
+            <div class="hero-text">
+                <h1>Healthcare built for <em>Africa</em>, made to last.</h1>
+                <p>Pharma-Deko has manufactured world-class healthcare products in Nigeria for over 50 years. From oral care to haematinics quality you can trust, priced for every Nigerian.</p>
+                <div class="hero-stats">
+                    <div><strong>50+</strong><span>Years of Operation</span></div>
+                    <div><strong>12+</strong><span>Categories</span></div>
+                    <div><strong>NAFDAC</strong><span>APPROVED</span></div>
+                </div>
+                <div class="hero-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search Pharma-Deko products...">
+                </div>
+                <button class="btn btn-primary" onclick="navigateTo('shop')">Explore Products</button>
+            </div>
+            <div class="hero-image">
+                <div class="hero-product-img"></div>
+            </div>
+        </div>
+    </section>
+    <section id="products" class="section categories-section">
+        <div class="container">
+            <span class="section-label">PRODUCT CATEGORIES</span>
+            <h2>Find the right product for you</h2>
+            <div class="categories-grid">
+                <div class="category-card" onclick="navigateTo('shop')">
+                    <div class="cat-img placeholder-blue"></div>
+                    <h4>Oral care</h4>
+                    <span>6 products</span>
+                </div>
+                <div class="category-card" onclick="navigateTo('shop')">
+                    <div class="cat-img placeholder-orange"></div>
+                    <h4>Syrups</h4>
+                    <span>3 products</span>
+                </div>
+                <div class="category-card" onclick="navigateTo('shop')">
+                    <div class="cat-img placeholder-yellow"></div>
+                    <h4>Vitamins</h4>
+                    <span>5 products</span>
+                </div>
+                <div class="category-card" onclick="navigateTo('shop')">
+                    <div class="cat-img placeholder-green"></div>
+                    <h4>Pain relief</h4>
+                    <span>3 products</span>
+                </div>
+                <div class="category-card" onclick="navigateTo('shop')">
+                    <div class="cat-img placeholder-red"></div>
+                    <h4>Beverages</h4>
+                    <span>2 products</span>
+                </div>
+                <div class="category-card" onclick="navigateTo('shop')">
+                    <div class="cat-img placeholder-purple"></div>
+                    <h4>Blood Tonic</h4>
+                    <span>5 products</span>
+                </div>
+            </div>
+            <a href="#" class="view-all" onclick="navigateTo('shop')">All categories →</a>
+        </div>
+    </section>
+    <section class="section featured-section">
+        <div class="container">
+            <span class="section-label">FEATURED PRODUCTS</span>
+            <p class="section-desc">Discover our most popular products trusted by thousands of customers for their health and wellness needs.</p>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-badge">Best Seller</div>
+                    <div class="product-discount">31% OFF</div>
+                    <div class="product-img placeholder-blue"></div>
+                    <div class="product-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> <span>(2341)</span></div>
+                    <h4>Sans Cream Soda</h4>
+                    <p class="product-desc">Fast pain relief tablets</p>
+                    <div class="product-price"><strong>₦7,600.00</strong> <del>₦10,000</del></div>
+                    <button class="btn btn-primary btn-sm" onclick="addToCart('Sans Cream Soda', 7600)"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <div class="product-badge">Best Seller</div>
+                    <div class="product-discount">29% OFF</div>
+                    <div class="product-img placeholder-orange"></div>
+                    <div class="product-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> <span>(1856)</span></div>
+                    <h4>Salin's Alignment</h4>
+                    <p class="product-desc">Bone health supplement</p>
+                    <div class="product-price"><strong>₦7,600.00</strong> <del>₦10,000</del></div>
+                    <button class="btn btn-primary btn-sm" onclick="addToCart('Salin\'s Alignment', 7600)"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <div class="product-badge">Best Seller</div>
+                    <div class="product-discount">28% OFF</div>
+                    <div class="product-img placeholder-yellow"></div>
+                    <div class="product-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> <span>(1234)</span></div>
+                    <h4>Pharmadec Syrub</h4>
+                    <p class="product-desc">Heart health capsules</p>
+                    <div class="product-price"><strong>₦7,600.00</strong> <del>₦10,000</del></div>
+                    <button class="btn btn-primary btn-sm" onclick="addToCart('Pharmadec Syrub', 7600)"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <div class="product-badge">Best Seller</div>
+                    <div class="product-discount">27% OFF</div>
+                    <div class="product-img placeholder-green"></div>
+                    <div class="product-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> <span>(987)</span></div>
+                    <h4>Brett Gold Mouthwash</h4>
+                    <p class="product-desc">Daily wellness formula</p>
+                    <div class="product-price"><strong>₦7,600.00</strong> <del>₦10,000</del></div>
+                    <button class="btn btn-primary btn-sm" onclick="addToCart('Brett Gold Mouthwash', 7600)"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                </div>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-outline" onclick="navigateTo('shop')">View All Best Sellers</button>
+            </div>
+        </div>
+    </section>
+    <section id="about" class="section quality-section">
+        <div class="container">
+            <span class="section-label">MANUFACTURING & QUALITY</span>
+            <h2>Transparency you can trust</h2>
+            <div class="quality-grid">
+                <div class="quality-image">
+                    <div class="placeholder-img" style="height:300px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border-radius:12px;"></div>
+                </div>
+                <div class="quality-content">
+                    <h3>Made in Nigeria.<br>To world-class standards.</h3>
+                    <p>Our Agbara facility produces every product to international GMP and ISO standards so you always know exactly what you're getting.</p>
+                    <div class="quality-list">
+                        <div class="quality-item">
+                            <strong>ISO Certified</strong>
+                            <span>Nigeria's first ISO-certified pharmaceutical manufacturer</span>
+                        </div>
+                        <div class="quality-item">
+                            <strong>NAFDAC Approved</strong>
+                            <span>Every product registered and approved before it reaches you</span>
+                        </div>
+                        <div class="quality-item">
+                            <strong>GMP Compliant</strong>
+                            <span>International good manufacturing practice on every production line</span>
+                        </div>
+                    </div>
+                    <a href="#" class="link-arrow">Our History →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section investors-section">
+        <div class="container">
+            <span class="section-label">INVESTORS & GOVERNANCE</span>
+            <h2>Transparency you can trust</h2>
+            <div class="investors-grid">
+                <div class="investor-card">
+                    <div class="investor-icon"><i class="fas fa-chart-line"></i></div>
+                    <h4>Financial reports</h4>
+                    <p>Annual reports, audited accounts, and financial statements.</p>
+                    <a href="#">View reports →</a>
+                </div>
+                <div class="investor-card">
+                    <div class="investor-icon"><i class="fas fa-users"></i></div>
+                    <h4>Board & leadership</h4>
+                    <p>Meet the directors and management team leading Pharma-Deko.</p>
+                    <a href="#">Meet the team →</a>
+                </div>
+                <div class="investor-card">
+                    <div class="investor-icon"><i class="fas fa-landmark"></i></div>
+                    <h4>Stock & governance</h4>
+                    <p>NSE listing information, shareholder data, and governance docs.</p>
+                    <a href="#">Investor portal →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section distribution-section">
+        <div class="container">
+            <span class="section-label">DISTRIBUTION & REACH</span>
+            <h2>From Agbara to all of Africa</h2>
+            <div class="distribution-grid">
+                <div class="distribution-content">
+                    <p>Trusted by pharmacies, hospitals, and families across Nigeria and West Africa.</p>
+                    <div class="dist-list">
+                        <div class="dist-item">
+                            <span class="dist-num">1</span>
+                            <div>
+                                <strong>Nationwide distributor network</strong>
+                                <span>Coverage across all 36 states through licensed distributors</span>
+                            </div>
+                        </div>
+                        <div class="dist-item">
+                            <span class="dist-num">2</span>
+                            <div>
+                                <strong>West African export</strong>
+                                <span>Active partnerships across the ECOWAS region</span>
+                            </div>
+                        </div>
+                        <div class="dist-item">
+                            <span class="dist-num">3</span>
+                            <div>
+                                <strong>Hospital & pharmacy supply</strong>
+                                <span>Direct supply to hospitals, clinics, and retail pharmacies</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="distribution-map">
+                    <div class="placeholder-img" style="height:300px;background:linear-gradient(135deg,#a8edea 0%,#fed6e3 100%);border-radius:12px;position:relative;">
+                        <span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#666;font-size:14px;">Map Placeholder</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section news-section">
+        <div class="container">
+            <span class="section-label">NEWS & PRESS</span>
+            <h2>Latest from Pharma-Deko</h2>
+            <div class="news-grid">
+                <div class="news-card">
+                    <div class="news-img placeholder-red"></div>
+                    <span class="news-date">MAY 2026</span>
+                    <h4>Brett Mouthwash Takes Oral Health Awareness to Lagos Markets</h4>
+                </div>
+                <div class="news-card">
+                    <div class="news-img placeholder-blue"></div>
+                    <span class="news-date">APRIL 2026</span>
+                    <h4>The Intercountry Centre for Oral Health for Africa, Jos in collaboration with Pharma Deko Nigeria PLC</h4>
+                </div>
+                <div class="news-card">
+                    <div class="news-img placeholder-green"></div>
+                    <span class="news-date">MARCH 2026</span>
+                    <h4>2025 Brett Mouthwash Wet Sampling Activities Across Various Locations in Lagos, Nigeria</h4>
+                </div>
+            </div>
+            <a href="#" class="view-all">All news →</a>
+        </div>
+    </section>
+    <section id="faq" class="section faq-section">
+        <div class="container">
+            <h2>FAQ</h2>
+            <p class="section-desc">Our licensed pharmacists are available to answer any</p>
+            <div class="faq-list">
+                <div class="faq-item active">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Are all Pharma-Deko products approved by NAFDAC?</span>
+                        <i class="fas fa-times"></i>
+                    </div>
+                    <div class="faq-answer">Yes. All Pharma-Deko Plc products are fully registered and approved by NAFDAC before they reach the market. Every product carries a valid NAFDAC registration number printed clearly on its packaging.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Can individuals place orders directly on the website or is it for distributors only?</span>
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="faq-answer">Individuals can place orders directly on our website. We serve both individual customers and distributors.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Can I order Pharma-Deko products if I am outside Nigeria?</span>
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="faq-answer">Yes, we ship to select countries in West Africa. Contact our sales team for international orders.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>What payment methods are accepted for online purchase; card, bank transfer, pay on delivery?</span>
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="faq-answer">We accept card payments, bank transfers, and pay on delivery for eligible locations.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Where can I find the NAFDAC registration number for a specific product?</span>
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="faq-answer">The NAFDAC registration number is printed on every product packaging and also listed on the product detail page.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>How do I become a licensed Pharma-Deko distributor?</span>
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="faq-answer">Contact our sales team through the Contact Us page to begin the distributor application process.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="careers" class="section careers-section">
+        <div class="container">
+            <div class="careers-header">
+                <div>
+                    <h2>Build your career in healthcare.</h2>
+                    <p>Pharma-Deko has manufactured world-class healthcare products in Nigeria for over 50 years. Quality you can trust, priced for every Nigerian.</p>
+                </div>
+                <a href="#" class="link-arrow">See all roles →</a>
+            </div>
+            <div class="careers-grid">
+                <div class="career-card">
+                    <span class="career-dept">MANUFACTURING</span>
+                    <h4>Production Pharmacist</h4>
+                    <span class="career-loc"><i class="fas fa-map-marker-alt"></i> Agbara, Ogun State</span>
+                </div>
+                <div class="career-card">
+                    <span class="career-dept">R&D</span>
+                    <h4>Research Scientist</h4>
+                    <span class="career-loc"><i class="fas fa-map-marker-alt"></i> Agbara, Ogun State</span>
+                </div>
+                <div class="career-card">
+                    <span class="career-dept">SALES</span>
+                    <h4>Regional Sales Manager</h4>
+                    <span class="career-loc"><i class="fas fa-map-marker-alt"></i> Lagos, Nigeria</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer id="footer" class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo-text">PHARMA<br><span>DEKO</span> PLC</div>
+                    <div class="logo-tagline">...Providing Healthy Solutions</div>
+                    <p>Nigeria's trusted manufacturer of quality medicines, consumer healthcare, and beverages improving lives across Africa since 1962.</p>
+                    <div class="footer-contact">
+                        <p><i class="fas fa-phone"></i> +234 (0) 8169622189</p>
+                        <p><i class="fas fa-envelope"></i> customercare@pharmadekopic.com</p>
+                        <p><i class="fas fa-clock"></i> 24/7 Customer Support</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Products</h4>
+                    <a href="#">Pharmaceuticals</a>
+                    <a href="#">Consumer Healthcare</a>
+                    <a href="#">Oral Care</a>
+                    <a href="#">Vitamins & Supplements</a>
+                    <a href="#">Beverages</a>
+                    <a href="#">Contract Manufacturing</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Health Conditions</h4>
+                    <a href="#">Investor Relations</a>
+                    <a href="#">Annual Reports</a>
+                    <a href="#">Board of Directors</a>
+                    <a href="#">Corporate Governance</a>
+                    <a href="#">NSE: PHARMDEKO</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <a href="#">About Us</a>
+                    <a href="#">Our History</a>
+                    <a href="#">Manufacturing & Facility</a>
+                    <a href="#">Careers</a>
+                    <a href="#">News & Press</a>
+                    <a href="#">Partnerships</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Support</h4>
+                    <a href="#">Contact Us</a>
+                    <a href="#">Find a Distributor</a>
+                    <a href="#">Healthcare Providers</a>
+                    <a href="#">FAQs</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Contact Us</a>
+                </div>
+            </div>
+            <div class="footer-subscribe">
+                <div>
+                    <h4>Stay Updated</h4>
+                    <p>Get the latest health tips, product updates, and exclusive offers.</p>
+                </div>
+                <div class="subscribe-form">
+                    <input type="email" placeholder="Enter your email">
+                    <button class="btn btn-primary">Subscribe</button>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 MediExpress. All rights reserved. <span class="sep">|</span> NAFDAC Reg. No. A7-0909L</p>
+                <div class="footer-legal">
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                    <a href="#">Accessibility</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- ==================== ADMIN DASHBOARD ==================== -->
+<div id="page-admin" class="page hidden">
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="admin-brand">
+                <div class="admin-logo">PD</div>
+                <div>
+                    <strong>Pharma-Deko IMS</strong>
+                    <span>Inventory management system</span>
+                </div>
+            </div>
+            <nav class="admin-nav">
+                <a href="#admin" class="active" onclick="navigateTo('admin')"><i class="fas fa-th-large"></i> Dashboard</a>
+                <a href="#admin/products" onclick="navigateTo('admin/products')"><i class="fas fa-box"></i> Products & Stock</a>
+                <a href="#admin/batches"><i class="fas fa-calendar-alt"></i> Batches & Expiry</a>
+                <a href="#admin/production" onclick="navigateTo('admin/production')"><i class="fas fa-industry"></i> Production Orders</a>
+                <a href="#admin/orders" onclick="navigateTo('admin/orders')"><i class="fas fa-shipping-fast"></i> Orders & Dispatch</a>
+                <a href="#admin/distributor-chain"><i class="fas fa-link"></i> Distributor Chain</a>
+                <a href="#admin/distributors"><i class="fas fa-users"></i> Distributors</a>
+                <a href="#admin/purchase-orders" onclick="navigateTo('admin/purchase-orders')"><i class="fas fa-file-invoice"></i> Purchase Orders</a>
+                <a href="#admin/returns" onclick="navigateTo('admin/returns')"><i class="fas fa-undo"></i> Returns</a>
+                <a href="#admin/reports" onclick="navigateTo('admin/reports')"><i class="fas fa-chart-bar"></i> Inventory Reports</a>
+                <a href="#admin/nafdac"><i class="fas fa-shield-alt"></i> NAFDAC & Compliance</a>
+                <a href="#admin/users" onclick="navigateTo('admin/users')"><i class="fas fa-user-cog"></i> User Management</a>
+                <a href="#admin/settings"><i class="fas fa-cog"></i> Settings</a>
+            </nav>
+        </aside>
+        <main class="admin-main">
+            <header class="admin-header">
+                <div>
+                    <h1>Dashboard</h1>
+                    <span>Pharma-Deko Plc · Agbara, Nigeria</span>
+                </div>
+                <div class="admin-actions">
+                    <div class="admin-search"><i class="fas fa-search"></i><input type="text" placeholder="Search..."></div>
+                    <button class="btn btn-icon"><i class="fas fa-filter"></i> Filter</button>
+                    <button class="btn btn-icon"><i class="fas fa-download"></i> Export</button>
+                    <button class="btn btn-primary"><i class="fas fa-plus"></i> Add Stock</button>
+                    <div class="notif-bell"><i class="fas fa-bell"></i><span class="notif-badge">4</span></div>
+                </div>
+            </header>
+            <div class="admin-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-label">Total SKUs in Stock</span>
+                        <div class="stat-value">10 <i class="fas fa-cube"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Total Units in Stock</span>
+                        <div class="stat-value">48,820 <i class="fas fa-boxes"></i></div>
+                    </div>
+                    <div class="stat-card alert">
+                        <span class="stat-label">Low Stock Alerts</span>
+                        <div class="stat-value">3 <i class="fas fa-exclamation-triangle"></i></div>
+                    </div>
+                    <div class="stat-card warning">
+                        <span class="stat-label">Expiring within 60 days</span>
+                        <div class="stat-value">2 <i class="fas fa-clock"></i></div>
+                    </div>
+                </div>
+                <div class="dashboard-grid">
+                    <div class="dashboard-card wide">
+                        <h3>Product Stock Overview</h3>
+                        <table class="data-table">
+                            <thead><tr><th>Product</th><th>Type</th><th>SKU</th><th>In Stock</th><th>Sold</th></tr></thead>
+                            <tbody>
+                                <tr><td>Vitamin C 500mg</td><td><span class="tag tag-blue">Tablet</span></td><td>VIT-C-500</td><td>8,400</td><td>12,600</td></tr>
+                                <tr><td>Haemout Syrup</td><td><span class="tag tag-purple">Syrup</span></td><td>HAE-SYR-200</td><td>1,200</td><td>6,800</td></tr>
+                                <tr><td>Malafend Tablets</td><td><span class="tag tag-blue">Tablet</span></td><td>MAL-TAB-500</td><td>5,600</td><td>9,400</td></tr>
+                                <tr><td>Codex Linctus</td><td><span class="tag tag-green">Liquid</span></td><td>COD-LIQ-100</td><td>420</td><td>3,200</td></tr>
+                                <tr><td>ORS Sachets</td><td><span class="tag tag-green">Liquid</span></td><td>ORS-SAC-250</td><td>18,000</td><td>22,000</td></tr>
+                                <tr><td>Glycerin Suppository</td><td><span class="tag tag-orange">Suppository</span></td><td>GLY-SUP</td><td>980</td><td>1,400</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Stock by Category</h3>
+                        <div class="chart-placeholder">
+                            <div class="bar-chart">
+                                <div class="bar" style="width:90%"><span>Vitamins</span></div>
+                                <div class="bar" style="width:70%"><span>Haematinics</span></div>
+                                <div class="bar" style="width:60%"><span>Anti-malarials</span></div>
+                                <div class="bar" style="width:50%"><span>Pain Relief</span></div>
+                                <div class="bar" style="width:40%"><span>Beverages</span></div>
+                                <div class="bar" style="width:30%"><span>Cough & Cold</span></div>
+                                <div class="bar" style="width:20%"><span>Suppositories</span></div>
+                                <div class="bar" style="width:35%"><span>Oral Care</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Warehouse Breakdown</h3>
+                        <div class="warehouse-list">
+                            <div class="warehouse-item">
+                                <div class="wh-info"><strong>Agbara Facility</strong><span>43,800 units</span></div>
+                                <div class="wh-bar"><div style="width:85%"></div></div>
+                                <span class="wh-pct">85% of total stock</span>
+                            </div>
+                            <div class="warehouse-item">
+                                <div class="wh-info"><strong>Lagos Depot</strong><span>17,580 units</span></div>
+                                <div class="wh-bar"><div style="width:35%"></div></div>
+                                <span class="wh-pct">35% of total stock</span>
+                            </div>
+                            <div class="warehouse-item">
+                                <div class="wh-info"><strong>Abuja Depot</strong><span>10,020 units</span></div>
+                                <div class="wh-bar"><div style="width:20%"></div></div>
+                                <span class="wh-pct">14% of total stock</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Admin: Products & Stock -->
+<div id="page-admin-products" class="page hidden">
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="admin-brand">
+                <div class="admin-logo">PD</div>
+                <div><strong>Pharma-Deko IMS</strong><span>Inventory management system</span></div>
+            </div>
+            <nav class="admin-nav">
+                <a href="#admin" onclick="navigateTo('admin')"><i class="fas fa-th-large"></i> Dashboard</a>
+                <a href="#admin/products" class="active" onclick="navigateTo('admin/products')"><i class="fas fa-box"></i> Products & Stock</a>
+                <a href="#admin/batches"><i class="fas fa-calendar-alt"></i> Batches & Expiry</a>
+                <a href="#admin/production" onclick="navigateTo('admin/production')"><i class="fas fa-industry"></i> Production Orders</a>
+                <a href="#admin/orders" onclick="navigateTo('admin/orders')"><i class="fas fa-shipping-fast"></i> Orders & Dispatch</a>
+                <a href="#admin/distributor-chain"><i class="fas fa-link"></i> Distributor Chain</a>
+                <a href="#admin/distributors"><i class="fas fa-users"></i> Distributors</a>
+                <a href="#admin/purchase-orders" onclick="navigateTo('admin/purchase-orders')"><i class="fas fa-file-invoice"></i> Purchase Orders</a>
+                <a href="#admin/returns" onclick="navigateTo('admin/returns')"><i class="fas fa-undo"></i> Returns</a>
+                <a href="#admin/reports" onclick="navigateTo('admin/reports')"><i class="fas fa-chart-bar"></i> Inventory Reports</a>
+                <a href="#admin/nafdac"><i class="fas fa-shield-alt"></i> NAFDAC & Compliance</a>
+                <a href="#admin/users" onclick="navigateTo('admin/users')"><i class="fas fa-user-cog"></i> User Management</a>
+                <a href="#admin/settings"><i class="fas fa-cog"></i> Settings</a>
+            </nav>
+        </aside>
+        <main class="admin-main">
+            <header class="admin-header">
+                <div><h1>Products & Stock</h1><span>Manage product catalog, variations and stock levels.</span></div>
+                <div class="admin-actions">
+                    <div class="admin-search"><i class="fas fa-search"></i><input type="text" placeholder="Search products, batches, or SKUs..."></div>
+                    <button class="btn btn-icon"><i class="fas fa-filter"></i> Filter</button>
+                    <button class="btn btn-icon"><i class="fas fa-download"></i> Export</button>
+                    <div class="notif-bell"><i class="fas fa-bell"></i></div>
+                    <button class="btn btn-primary"><i class="fas fa-plus"></i> Add Product</button>
+                </div>
+            </header>
+            <div class="admin-content">
+                <div class="filter-bar">
+                    <select><option>All categories</option></select>
+                    <select><option>All formulations</option></select>
+                    <select><option>All stock status</option></select>
+                </div>
+                <div class="dashboard-card">
+                    <h3>Product List</h3>
+                    <table class="data-table">
+                        <thead><tr><th>PRODUCT</th><th>TYPE</th><th>CATEGORY</th><th>SKU</th><th>NAFDAC REG.</th><th>PACK SIZE</th><th>UOM</th><th>UNITS IN STOCK</th><th>DAMAGED</th></tr></thead>
+                        <tbody>
+                            <tr><td>Dekomint Herbal Mouthwash</td><td><span class="tag tag-green">Liquid</span></td><td>Oral Care</td><td>PD-OC-1101</td><td>A4-1234</td><td>200ml</td><td>Bottle</td><td>18,420</td><td>12</td></tr>
+                            <tr><td>Dekodent Fluoride Toothpaste</td><td><span class="tag tag-green">Liquid</span></td><td>Oral Care</td><td>PD-OC-1104</td><td>A4-5678</td><td>140g</td><td>Tube</td><td>7,420</td><td>5</td></tr>
+                            <tr><td>Astyfer Blood Tonic</td><td><span class="tag tag-yellow">Syrup</span></td><td>Haematinics</td><td>PD-HM-2201</td><td>04-9876</td><td>200ml</td><td>Bottle</td><td>26,310</td><td>45</td></tr>
+                            <tr><td>Dekovit Multivitamin Syrup</td><td><span class="tag tag-yellow">Syrup</span></td><td>Vitamins</td><td>PD-VT-3301</td><td>A4-1122</td><td>100ml</td><td>Bottle</td><td>15,980</td><td>22</td></tr>
+                            <tr><td>Vitamin C 500mg</td><td><span class="tag tag-blue">Tablet</span></td><td>Vitamins</td><td>PD-VT-5001</td><td>A4-2234</td><td>500mg</td><td>Tab</td><td>21,240</td><td>8</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Admin: Orders & Dispatch -->
+<div id="page-admin-orders" class="page hidden">
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="admin-brand">
+                <div class="admin-logo">PD</div>
+                <div><strong>Pharma-Deko IMS</strong><span>Inventory management system</span></div>
+            </div>
+            <nav class="admin-nav">
+                <a href="#admin" onclick="navigateTo('admin')"><i class="fas fa-th-large"></i> Dashboard</a>
+                <a href="#admin/products" onclick="navigateTo('admin/products')"><i class="fas fa-box"></i> Products & Stock</a>
+                <a href="#admin/batches"><i class="fas fa-calendar-alt"></i> Batches & Expiry</a>
+                <a href="#admin/production" onclick="navigateTo('admin/production')"><i class="fas fa-industry"></i> Production Orders</a>
+                <a href="#admin/orders" class="active" onclick="navigateTo('admin/orders')"><i class="fas fa-shipping-fast"></i> Orders & Dispatch</a>
+                <a href="#admin/distributor-chain"><i class="fas fa-link"></i> Distributor Chain</a>
+                <a href="#admin/distributors"><i class="fas fa-users"></i> Distributors</a>
+                <a href="#admin/purchase-orders" onclick="navigateTo('admin/purchase-orders')"><i class="fas fa-file-invoice"></i> Purchase Orders</a>
+                <a href="#admin/returns" onclick="navigateTo('admin/returns')"><i class="fas fa-undo"></i> Returns</a>
+                <a href="#admin/reports" onclick="navigateTo('admin/reports')"><i class="fas fa-chart-bar"></i> Inventory Reports</a>
+                <a href="#admin/nafdac"><i class="fas fa-shield-alt"></i> NAFDAC & Compliance</a>
+                <a href="#admin/users" onclick="navigateTo('admin/users')"><i class="fas fa-user-cog"></i> User Management</a>
+                <a href="#admin/settings"><i class="fas fa-cog"></i> Settings</a>
+            </nav>
+        </aside>
+        <main class="admin-main">
+            <header class="admin-header">
+                <div><h1>Orders & Dispatch</h1><span>Manage outbound consignments and track deliveries.</span></div>
+                <div class="admin-actions">
+                    <div class="admin-search"><i class="fas fa-search"></i><input type="text" placeholder="Search orders, distributors..."></div>
+                    <button class="btn btn-icon"><i class="fas fa-filter"></i> Filter</button>
+                    <button class="btn btn-icon"><i class="fas fa-download"></i> Export</button>
+                    <div class="notif-bell"><i class="fas fa-bell"></i></div>
+                    <button class="btn btn-primary"><i class="fas fa-plus"></i> New Dispatch</button>
+                </div>
+            </header>
+            <div class="admin-content">
+                <div class="order-tabs">
+                    <button class="active">All Orders <span class="tab-count">1,248</span></button>
+                    <button>Pending Processing <span class="tab-count alert">42</span></button>
+                    <button>In Transit <span class="tab-count warning">18</span></button>
+                    <button>Delivered <span class="tab-count success">1,188</span></button>
+                </div>
+                <div class="dashboard-card">
+                    <table class="data-table">
+                        <thead><tr><th>ORDER ID</th><th>PRODUCTS ORDERED</th><th>DESTINATION TYPE</th><th>DESTINATION</th><th>DISPATCH DATE</th><th>EXPECTED DELIVERY</th><th>STATUS</th></tr></thead>
+                        <tbody>
+                            <tr><td>ORD-5542</td><td>Dekomol Paracetamol, Vitamin C...<br><small>3 items (12,000 units)</small></td><td>Regional Depot</td><td>Lagos Central Hub</td><td>02/05/2026</td><td>03/05/2026</td><td><span class="status-badge success">Delivered</span></td></tr>
+                            <tr><td>ORD-5541</td><td>Astyfer Blood Tonic, Dekoquine...<br><small>5 items (24,500 units)</small></td><td>Major Distributor</td><td>Alpha Pharmacy Ltd.</td><td>01/05/2026</td><td>04/05/2026</td><td><span class="status-badge warning">In Transit</span></td></tr>
+                            <tr><td>ORD-5540</td><td>Dekoflam Ibuprofen 400mg<br><small>1 item (5,000 units)</small></td><td>Hospital Partner</td><td>National Hospital Abuja</td><td>01/05/2026</td><td>05/05/2026</td><td><span class="status-badge warning">In Transit</span></td></tr>
+                            <tr><td>ORD-5539</td><td>Vitamin C 100mg Chewable<br><small>1 item (20,000 units)</small></td><td>Regional Depot</td><td>Kano North Hub</td><td>Pending</td><td>TBD</td><td><span class="status-badge pending">Pending</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Admin: Inventory Reports -->
+<div id="page-admin-reports" class="page hidden">
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="admin-brand">
+                <div class="admin-logo">PD</div>
+                <div><strong>Pharma-Deko IMS</strong><span>Inventory management system</span></div>
+            </div>
+            <nav class="admin-nav">
+                <a href="#admin" onclick="navigateTo('admin')"><i class="fas fa-th-large"></i> Dashboard</a>
+                <a href="#admin/products" onclick="navigateTo('admin/products')"><i class="fas fa-box"></i> Products & Stock</a>
+                <a href="#admin/batches"><i class="fas fa-calendar-alt"></i> Batches & Expiry</a>
+                <a href="#admin/production" onclick="navigateTo('admin/production')"><i class="fas fa-industry"></i> Production Orders</a>
+                <a href="#admin/orders" onclick="navigateTo('admin/orders')"><i class="fas fa-shipping-fast"></i> Orders & Dispatch</a>
+                <a href="#admin/distributor-chain"><i class="fas fa-link"></i> Distributor Chain</a>
+                <a href="#admin/distributors"><i class="fas fa-users"></i> Distributors</a>
+                <a href="#admin/purchase-orders" onclick="navigateTo('admin/purchase-orders')"><i class="fas fa-file-invoice"></i> Purchase Orders</a>
+                <a href="#admin/returns" onclick="navigateTo('admin/returns')"><i class="fas fa-undo"></i> Returns</a>
+                <a href="#admin/reports" class="active" onclick="navigateTo('admin/reports')"><i class="fas fa-chart-bar"></i> Inventory Reports</a>
+                <a href="#admin/nafdac"><i class="fas fa-shield-alt"></i> NAFDAC & Compliance</a>
+                <a href="#admin/users" onclick="navigateTo('admin/users')"><i class="fas fa-user-cog"></i> User Management</a>
+                <a href="#admin/settings"><i class="fas fa-cog"></i> Settings</a>
+            </nav>
+        </aside>
+        <main class="admin-main">
+            <header class="admin-header">
+                <div><h1>Inventory Reports</h1><span>Generate and export inventory data reports.</span></div>
+                <div class="admin-actions">
+                    <button class="btn btn-icon"><i class="fas fa-filter"></i> Filter Data</button>
+                    <button class="btn btn-primary"><i class="fas fa-plus"></i> Custom Report</button>
+                </div>
+            </header>
+            <div class="admin-content">
+                <div class="reports-grid">
+                    <div class="report-card">
+                        <h4><i class="fas fa-dollar-sign" style="color:var(--primary);margin-right:8px;"></i>Stock Valuation</h4>
+                        <p>Current financial value of inventory</p>
+                        <div class="report-form">
+                            <label>Date As Of</label>
+                            <input type="text" value="07/26/2026">
+                            <label>Location</label>
+                            <select><option>All Locations</option></select>
+                            <div class="report-actions">
+                                <button class="btn btn-icon"><i class="fas fa-file-pdf"></i> PDF</button>
+                                <button class="btn btn-icon"><i class="fas fa-file-excel"></i> Excel</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="report-card">
+                        <h4><i class="fas fa-exchange-alt" style="color:var(--primary);margin-right:8px;"></i>Stock Movement</h4>
+                        <p>Inflow and outflow of products</p>
+                        <div class="report-form">
+                            <div class="form-row">
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label>Start Date</label>
+                                    <input type="text" value="06/26/2026">
+                                </div>
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label>End Date</label>
+                                    <input type="text" value="07/26/2026">
+                                </div>
+                            </div>
+                            <label>Product Category</label>
+                            <select><option>All Categories</option></select>
+                            <div class="report-actions">
+                                <button class="btn btn-icon"><i class="fas fa-file-pdf"></i> PDF</button>
+                                <button class="btn btn-icon"><i class="fas fa-file-excel"></i> Excel</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="report-card">
+                        <h4><i class="fas fa-clock" style="color:var(--primary);margin-right:8px;"></i>Slow-Moving Stock</h4>
+                        <p>Items with low turnover rate</p>
+                        <div class="report-form">
+                            <label>Period (Months)</label>
+                            <select><option>6 Months</option></select>
+                            <label>Threshold (%)</label>
+                            <input type="text" value="10">
+                            <div class="report-actions">
+                                <button class="btn btn-icon"><i class="fas fa-file-pdf"></i> PDF</button>
+                                <button class="btn btn-icon"><i class="fas fa-file-excel"></i> Excel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Admin: User Management -->
+<div id="page-admin-users" class="page hidden">
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="admin-brand">
+                <div class="admin-logo">PD</div>
+                <div><strong>Pharma-Deko IMS</strong><span>Inventory management system</span></div>
+            </div>
+            <nav class="admin-nav">
+                <a href="#admin" onclick="navigateTo('admin')"><i class="fas fa-th-large"></i> Dashboard</a>
+                <a href="#admin/products" onclick="navigateTo('admin/products')"><i class="fas fa-box"></i> Products & Stock</a>
+                <a href="#admin/batches"><i class="fas fa-calendar-alt"></i> Batches & Expiry</a>
+                <a href="#admin/production" onclick="navigateTo('admin/production')"><i class="fas fa-industry"></i> Production Orders</a>
+                <a href="#admin/orders" onclick="navigateTo('admin/orders')"><i class="fas fa-shipping-fast"></i> Orders & Dispatch</a>
+                <a href="#admin/distributor-chain"><i class="fas fa-link"></i> Distributor Chain</a>
+                <a href="#admin/distributors"><i class="fas fa-users"></i> Distributors</a>
+                <a href="#admin/purchase-orders" onclick="navigateTo('admin/purchase-orders')"><i class="fas fa-file-invoice"></i> Purchase Orders</a>
+                <a href="#admin/returns" onclick="navigateTo('admin/returns')"><i class="fas fa-undo"></i> Returns</a>
+                <a href="#admin/reports" onclick="navigateTo('admin/reports')"><i class="fas fa-chart-bar"></i> Inventory Reports</a>
+                <a href="#admin/nafdac"><i class="fas fa-shield-alt"></i> NAFDAC & Compliance</a>
+                <a href="#admin/users" class="active" onclick="navigateTo('admin/users')"><i class="fas fa-user-cog"></i> User Management</a>
+                <a href="#admin/settings"><i class="fas fa-cog"></i> Settings</a>
+            </nav>
+        </aside>
+        <main class="admin-main">
+            <header class="admin-header">
+                <div><h1>User Management</h1><span>Manage staff accounts and permissions.</span></div>
+                <div class="admin-actions">
+                    <div class="admin-search"><i class="fas fa-search"></i><input type="text" placeholder="Search users by name or email..."></div>
+                    <button class="btn btn-icon"><i class="fas fa-filter"></i> Filter</button>
+                    <button class="btn btn-primary"><i class="fas fa-plus"></i> Add User</button>
+                </div>
+            </header>
+            <div class="admin-content">
+                <div class="dashboard-card">
+                    <table class="data-table">
+                        <thead><tr><th>NAME</th><th>EMAIL</th><th>ROLE</th><th>LOCATION</th><th>LAST ACTIVE</th><th>STATUS</th></tr></thead>
+                        <tbody>
+                            <tr><td><span style="display:inline-flex;align-items:center;gap:8px;"><span style="width:28px;height:28px;border-radius:50%;background:#dbeafe;color:#1e40af;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;">EA</span> Emeka Anyanwu</span></td><td>e.anyanwu@pharmadeko.com.ng</td><td><span style="color:var(--primary);font-size:12px;">System Admin</span></td><td>HQ - Lagos</td><td>Today, 09:41 AM</td><td><span class="status-badge success">Active</span></td></tr>
+                            <tr><td><span style="display:inline-flex;align-items:center;gap:8px;"><span style="width:28px;height:28px;border-radius:50%;background:#ffedd5;color:#9a3412;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;">OO</span> Oluwaseun Ojo</span></td><td>o.ojo@pharmadeko.com.ng</td><td><span style="color:var(--primary);font-size:12px;">Production Manager</span></td><td>Agbara Factory</td><td>Today, 10:15 AM</td><td><span class="status-badge success">Active</span></td></tr>
+                            <tr><td><span style="display:inline-flex;align-items:center;gap:8px;"><span style="width:28px;height:28px;border-radius:50%;background:#dbeafe;color:#1e40af;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;">AA</span> Aisha Abubakar</span></td><td>a.abubakar@pharmadeko.com.ng</td><td><span style="color:var(--primary);font-size:12px;">Quality Control Lead</span></td><td>Agbara Factory</td><td>Yesterday, 04:30</td><td><span class="status-badge success">Active</span></td></tr>
+                            <tr><td><span style="display:inline-flex;align-items:center;gap:8px;"><span style="width:28px;height:28px;border-radius:50%;background:#dcfce7;color:#166534;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;">FN</span> Folake Nwachukwu</span></td><td>f.nwachukwu@pharmadeko.com.ng</td><td><span style="color:var(--primary);font-size:12px;">Warehouse Supervisor</span></td><td>Central Warehouse</td><td>Today, 08:05 AM</td><td><span class="status-badge success">Active</span></td></tr>
+                            <tr><td><span style="display:inline-flex;align-items:center;gap:8px;"><span style="width:28px;height:28px;border-radius:50%;background:#fef9c3;color:#854d0e;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;">OI</span> Obinna Ibekwe</span></td><td>o.ibekwe@pharmadeko.com.ng</td><td><span style="color:var(--primary);font-size:12px;">Sales Representative</span></td><td>South-East Region</td><td>2 days ago</td><td><span class="status-badge success">Active</span></td></tr>
+                            <tr><td><span style="display:inline-flex;align-items:center;gap:8px;"><span style="width:28px;height:28px;border-radius:50%;background:#f3e8ff;color:#6b21a8;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;">UB</span> Uchechukwu Bello</span></td><td>u.bello@pharmadeko.com.ng</td><td><span style="color:var(--primary);font-size:12px;">Logistics Coordinator</span></td><td>HQ - Lagos</td><td>Today, 11:22 AM</td><td><span class="status-badge success">Active</span></td></tr>
+                            <tr><td><span style="display:inline-flex;align-items:center;gap:8px;"><span style="width:28px;height:28px;border-radius:50%;background:#ffedd5;color:#9a3412;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;">CM</span> Chidi Moses</span></td><td>c.moses@pharmadeko.com.ng</td><td><span style="color:var(--primary);font-size:12px;">Finance Manager</span></td><td>HQ - Lagos</td><td>Yesterday, 05:15</td><td><span class="status-badge success">Active</span></td></tr>
+                            <tr><td><span style="display:inline-flex;align-items:center;gap:8px;"><span style="width:28px;height:28px;border-radius:50%;background:#dbeafe;color:#1e40af;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;">TO</span> Taiwo Odukoya</span></td><td>t.odukoya@pharmadeko.com.ng</td><td><span style="color:var(--primary);font-size:12px;">Compliance Officer</span></td><td>HQ - Lagos</td><td>-</td><td><span class="status-badge pending">Inactive</span></td></tr>
+                        </tbody>
+                    </table>
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;font-size:13px;color:var(--text-light);">
+                        <span>Showing 1 to 8 of 24 results</span>
+                        <div style="display:flex;gap:4px;">
+                            <button class="btn btn-icon" style="padding:4px 8px;"><i class="fas fa-chevron-left"></i></button>
+                            <button class="btn btn-icon" style="padding:4px 8px;background:var(--primary);color:white;">1</button>
+                            <button class="btn btn-icon" style="padding:4px 8px;">2</button>
+                            <button class="btn btn-icon" style="padding:4px 8px;">3</button>
+                            <button class="btn btn-icon" style="padding:4px 8px;"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Admin: Purchase Orders -->
+<div id="page-admin-purchase-orders" class="page hidden">
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="admin-brand">
+                <div class="admin-logo">PD</div>
+                <div><strong>Pharma-Deko IMS</strong><span>Inventory management system</span></div>
+            </div>
+            <nav class="admin-nav">
+                <a href="#admin" onclick="navigateTo('admin')"><i class="fas fa-th-large"></i> Dashboard</a>
+                <a href="#admin/products" onclick="navigateTo('admin/products')"><i class="fas fa-box"></i> Products & Stock</a>
+                <a href="#admin/batches"><i class="fas fa-calendar-alt"></i> Batches & Expiry</a>
+                <a href="#admin/production" onclick="navigateTo('admin/production')"><i class="fas fa-industry"></i> Production Orders</a>
+                <a href="#admin/orders" onclick="navigateTo('admin/orders')"><i class="fas fa-shipping-fast"></i> Orders & Dispatch</a>
+                <a href="#admin/distributor-chain"><i class="fas fa-link"></i> Distributor Chain</a>
+                <a href="#admin/distributors"><i class="fas fa-users"></i> Distributors</a>
+                <a href="#admin/purchase-orders" class="active" onclick="navigateTo('admin/purchase-orders')"><i class="fas fa-file-invoice"></i> Purchase Orders</a>
+                <a href="#admin/returns" onclick="navigateTo('admin/returns')"><i class="fas fa-undo"></i> Returns</a>
+                <a href="#admin/reports" onclick="navigateTo('admin/reports')"><i class="fas fa-chart-bar"></i> Inventory Reports</a>
+                <a href="#admin/nafdac"><i class="fas fa-shield-alt"></i> NAFDAC & Compliance</a>
+                <a href="#admin/users" onclick="navigateTo('admin/users')"><i class="fas fa-user-cog"></i> User Management</a>
+                <a href="#admin/settings"><i class="fas fa-cog"></i> Settings</a>
+            </nav>
+        </aside>
+        <main class="admin-main">
+            <header class="admin-header">
+                <div><h1>Purchase Orders</h1><span>Manage incoming supplies and raw materials.</span></div>
+                <div class="admin-actions">
+                    <div class="admin-search"><i class="fas fa-search"></i><input type="text" placeholder="Search orders, suppliers, items..."></div>
+                    <button class="btn btn-icon"><i class="fas fa-filter"></i> Filter</button>
+                    <button class="btn btn-icon"><i class="fas fa-download"></i> Export</button>
+                </div>
+            </header>
+            <div class="admin-content">
+                <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="stat-card">
+                        <span class="stat-label">TOTAL OPEN POS</span>
+                        <div class="stat-value">124 <i class="fas fa-file-invoice" style="background:#dbeafe;color:#1e40af;"></i></div>
+                    </div>
+                    <div class="stat-card alert">
+                        <span class="stat-label">POS OVERDUE</span>
+                        <div class="stat-value" style="color:var(--danger);">12 <i class="fas fa-exclamation-circle" style="background:#fee2e2;color:var(--danger);"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">ARRIVING THIS WEEK</span>
+                        <div class="stat-value">28 <i class="fas fa-truck" style="background:#dcfce7;color:#166534;"></i></div>
+                    </div>
+                </div>
+                <div class="dashboard-card" style="margin-top:24px;">
+                    <table class="data-table">
+                        <thead><tr><th>SUPPLIER</th><th>MATERIAL TYPE</th><th>INTENDED FOR</th><th>QUANTITY</th><th>VALUE</th></tr></thead>
+                        <tbody>
+                            <tr><td>Emzor Ventures Ltd<br><small>PO-2023-1042</small></td><td>Active Pharmaceutical Ingredients (API)</td><td>Paracetamol Production</td><td>5,000 kg</td><td><strong>₦12,500,000</strong></td></tr>
+                            <tr><td>Northern Meds Ltd<br><small>PO-2023-1043</small></td><td>Packaging Materials</td><td>Syrup Bottles 100ml</td><td>50,000 units</td><td><strong>₦4,200,000</strong></td></tr>
+                            <tr><td>Global Chemical Corp<br><small>PO-2023-1038</small></td><td>Excipients</td><td>Tablet Binding Agents</td><td>1,200 kg</td><td><strong>₦3,850,000</strong></td></tr>
+                            <tr><td>Delta Beverages Distribution<br><small>PO-2023-1045</small></td><td>Solvents</td><td>Liquid Preparations</td><td>10,000 L</td><td><strong>₦8,100,000</strong></td></tr>
+                            <tr><td>PharmaPack Solutions<br><small>PO-2023-1040</small></td><td>Secondary Packaging</td><td>Cartons & Leaflets</td><td>100,000 units</td><td><strong>₦2,500,000</strong></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Admin: Returns -->
+<div id="page-admin-returns" class="page hidden">
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="admin-brand">
+                <div class="admin-logo">PD</div>
+                <div><strong>Pharma-Deko IMS</strong><span>Inventory management system</span></div>
+            </div>
+            <nav class="admin-nav">
+                <a href="#admin" onclick="navigateTo('admin')"><i class="fas fa-th-large"></i> Dashboard</a>
+                <a href="#admin/products" onclick="navigateTo('admin/products')"><i class="fas fa-box"></i> Products & Stock</a>
+                <a href="#admin/batches"><i class="fas fa-calendar-alt"></i> Batches & Expiry</a>
+                <a href="#admin/production" onclick="navigateTo('admin/production')"><i class="fas fa-industry"></i> Production Orders</a>
+                <a href="#admin/orders" onclick="navigateTo('admin/orders')"><i class="fas fa-shipping-fast"></i> Orders & Dispatch</a>
+                <a href="#admin/distributor-chain"><i class="fas fa-link"></i> Distributor Chain</a>
+                <a href="#admin/distributors"><i class="fas fa-users"></i> Distributors</a>
+                <a href="#admin/purchase-orders" onclick="navigateTo('admin/purchase-orders')"><i class="fas fa-file-invoice"></i> Purchase Orders</a>
+                <a href="#admin/returns" class="active" onclick="navigateTo('admin/returns')"><i class="fas fa-undo"></i> Returns</a>
+                <a href="#admin/reports" onclick="navigateTo('admin/reports')"><i class="fas fa-chart-bar"></i> Inventory Reports</a>
+                <a href="#admin/nafdac"><i class="fas fa-shield-alt"></i> NAFDAC & Compliance</a>
+                <a href="#admin/users" onclick="navigateTo('admin/users')"><i class="fas fa-user-cog"></i> User Management</a>
+                <a href="#admin/settings"><i class="fas fa-cog"></i> Settings</a>
+            </nav>
+        </aside>
+        <main class="admin-main">
+            <header class="admin-header">
+                <div><h1>Returns</h1><span>Manage product returns, credits, and disposal.</span></div>
+                <div class="admin-actions">
+                    <div class="admin-search"><i class="fas fa-search"></i><input type="text" placeholder="Search returns..."></div>
+                    <button class="btn btn-icon"><i class="fas fa-filter"></i> Filter</button>
+                    <button class="btn btn-icon"><i class="fas fa-download"></i> Export</button>
+                    <button class="btn btn-primary"><i class="fas fa-plus"></i> Log Return</button>
+                </div>
+            </header>
+            <div class="admin-content">
+                <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="stat-card">
+                        <span class="stat-label">Total Returns Pending</span>
+                        <div class="stat-value">12</div>
+                    </div>
+                    <div class="stat-card alert">
+                        <span class="stat-label">Value of Pending Returns</span>
+                        <div class="stat-value" style="color:var(--danger);">₦4,250,000</div>
+                    </div>
+                    <div class="stat-card warning">
+                        <span class="stat-label">Returns Processed (This Week)</span>
+                        <div class="stat-value" style="color:var(--warning);">5</div>
+                    </div>
+                </div>
+                <div class="dashboard-card" style="margin-top:24px;">
+                    <table class="data-table">
+                        <thead><tr><th>RETURN ID</th><th>PRODUCT</th><th>BATCH NO.</th><th>RETURNED BY</th><th>UNITS</th><th>REASON</th></tr></thead>
+                        <tbody>
+                            <tr><td>RTN-1024</td><td>Dekotuss Cough Syrup</td><td>BX-99201</td><td>MedPlus Pharmacy (Ikeja)</td><td>120</td><td>Nearing Expiry</td></tr>
+                            <tr><td>RTN-1023</td><td>Dekoflam Ibuprofen 400mg</td><td>IB-44512</td><td>HealthPlus (VI)</td><td>50</td><td>Damaged Packaging</td></tr>
+                            <tr><td>RTN-1022</td><td>Deko Malt Drink</td><td>MD-11003</td><td>Shoprite (Surulere)</td><td>240</td><td>Expired</td></tr>
+                            <tr><td>RTN-1021</td><td>Astyfer Blood Tonic</td><td>AS-33200</td><td>Alpha Pharmacy</td><td>30</td><td>Wrong Item Delivered</td></tr>
+                            <tr><td>RTN-1020</td><td>Dekomol Paracetamol 500mg</td><td>PC-77881</td><td>CarePlus Clinics</td><td>500</td><td>Recalled Batch</td></tr>
+                            <tr><td>RTN-1019</td><td>Dekocain Paediatric Suppository</td><td>SP-11204</td><td>General Hospital, Gbagada</td><td>20</td><td>Cold Chain Broken</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Admin: Production Orders -->
+<div id="page-admin-production" class="page hidden">
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="admin-brand">
+                <div class="admin-logo">PD</div>
+                <div><strong>Pharma-Deko IMS</strong><span>Inventory management system</span></div>
+            </div>
+            <nav class="admin-nav">
+                <a href="#admin" onclick="navigateTo('admin')"><i class="fas fa-th-large"></i> Dashboard</a>
+                <a href="#admin/products" onclick="navigateTo('admin/products')"><i class="fas fa-box"></i> Products & Stock</a>
+                <a href="#admin/batches"><i class="fas fa-calendar-alt"></i> Batches & Expiry</a>
+                <a href="#admin/production" class="active" onclick="navigateTo('admin/production')"><i class="fas fa-industry"></i> Production Orders</a>
+                <a href="#admin/orders" onclick="navigateTo('admin/orders')"><i class="fas fa-shipping-fast"></i> Orders & Dispatch</a>
+                <a href="#admin/distributor-chain"><i class="fas fa-link"></i> Distributor Chain</a>
+                <a href="#admin/distributors"><i class="fas fa-users"></i> Distributors</a>
+                <a href="#admin/purchase-orders" onclick="navigateTo('admin/purchase-orders')"><i class="fas fa-file-invoice"></i> Purchase Orders</a>
+                <a href="#admin/returns" onclick="navigateTo('admin/returns')"><i class="fas fa-undo"></i> Returns</a>
+                <a href="#admin/reports" onclick="navigateTo('admin/reports')"><i class="fas fa-chart-bar"></i> Inventory Reports</a>
+                <a href="#admin/nafdac"><i class="fas fa-shield-alt"></i> NAFDAC & Compliance</a>
+                <a href="#admin/users" onclick="navigateTo('admin/users')"><i class="fas fa-user-cog"></i> User Management</a>
+                <a href="#admin/settings"><i class="fas fa-cog"></i> Settings</a>
+            </nav>
+        </aside>
+        <main class="admin-main">
+            <header class="admin-header">
+                <div><h1>Production Orders</h1><span>Manage and track manufacturing work orders across production lines.</span></div>
+                <div class="admin-actions">
+                    <div class="admin-search"><i class="fas fa-search"></i><input type="text" placeholder="Search orders, products, or batches..."></div>
+                    <button class="btn btn-icon"><i class="fas fa-filter"></i> Filter</button>
+                    <button class="btn btn-icon"><i class="fas fa-download"></i> Export</button>
+                    <div class="notif-bell"><i class="fas fa-bell"></i></div>
+                    <button class="btn btn-primary"><i class="fas fa-plus"></i> New Order</button>
+                </div>
+            </header>
+            <div class="admin-content">
+                <div class="filter-bar">
+                    <select><option>All lines</option></select>
+                    <select><option>All statuses</option></select>
+                    <select><option>This month</option></select>
+                    <span style="font-size:13px;color:var(--text-light);margin-left:auto;">12 of 45 orders</span>
+                </div>
+                <div class="dashboard-card">
+                    <table class="data-table">
+                        <thead><tr><th>ORDER ID</th><th>PRODUCT</th><th>BATCH NO.</th><th>LINE</th><th>PLANNED</th><th>ACTUAL</th><th>YIELD</th></tr></thead>
+                        <tbody>
+                            <tr><td>PO-24-1042</td><td>Dekomint Herbal Mouthwash<br><small>500ml × 12 · Liquid</small></td><td>BT-DM-2407A</td><td>Line A (Liquids)</td><td>20,000</td><td>18,420</td><td><span style="color:var(--success);font-weight:600;">92.1%</span> <div style="display:inline-block;width:60px;height:4px;background:#e5e5e5;border-radius:2px;vertical-align:middle;margin-left:4px;"><div style="width:92%;height:100%;background:var(--success);border-radius:2px;"></div></div></td></tr>
+                            <tr><td>PO-24-1043</td><td>Astyfer Blood Tonic<br><small>200ml × 24 · Syrup</small></td><td>BT-AS-2407C</td><td>Line A (Liquids)</td><td>15,000</td><td>8,250</td><td><span style="color:var(--warning);font-weight:600;">55.0%</span> <div style="display:inline-block;width:60px;height:4px;background:#e5e5e5;border-radius:2px;vertical-align:middle;margin-left:4px;"><div style="width:55%;height:100%;background:var(--warning);border-radius:2px;"></div></div></td></tr>
+                            <tr><td>PO-24-1044</td><td>Vitamin C 100mg Chewable<br><small>100 tabs · Tablet</small></td><td>BT-VC-2407A</td><td>Line C (Tablets)</td><td>50,000</td><td>-</td><td>-</td></tr>
+                            <tr><td>PO-24-1040</td><td>Dekomol Paracetamol 500mg<br><small>10 × 10 Blister · Tablet</small></td><td>BT-DP-2406D</td><td>Line C (Tablets)</td><td>100,000</td><td>89,500</td><td><span style="color:var(--danger);font-weight:600;">89.5%</span> <div style="display:inline-block;width:60px;height:4px;background:#e5e5e5;border-radius:2px;vertical-align:middle;margin-left:4px;"><div style="width:89%;height:100%;background:var(--danger);border-radius:2px;"></div></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- ==================== CUSTOMER PAGES ==================== -->
+
+<!-- My Orders -->
+<div id="page-my-orders" class="page hidden">
+    <div class="customer-header">
+        <div class="container">
+            <a href="#" class="logo" onclick="navigateTo('')">
+                <div class="logo-text">PHARMA<br><span>DEKO</span> PLC</div>
+                <div class="logo-tagline">...Providing Healthy Solutions</div>
+            </a>
+            <div class="header-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search products, medicines, oral care...">
+            </div>
+            <div class="header-actions">
+                <a href="#" onclick="openAuthModal()"><i class="far fa-user"></i> My orders</a>
+                <a href="#cart" onclick="navigateTo('cart')"><i class="fas fa-shopping-cart"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="orders-page">
+        <div class="container">
+            <p style="font-size:13px;color:var(--text-light);margin-bottom:8px;">Welcome back,</p>
+            <h2>My Orders</h2>
+            <div class="order-tabs-simple">
+                <button class="active">All orders</button>
+                <button>Processing</button>
+                <button>Shipped</button>
+                <button>Delivered</button>
+                <button>Cancelled</button>
+            </div>
+            <div class="order-item">
+                <div class="order-info">
+                    <h4>PD-20240012 <span style="font-weight:400;color:var(--text-lighter);font-size:12px;">25/07/2026</span></h4>
+                    <p class="order-desc">Revivtone Blood Tonic 200ml + 1 more item</p>
+                    <p class="order-price">₦8,015</p>
+                </div>
+                <div class="order-actions">
+                    <div class="order-status">
+                        <span class="status-badge success">Paid</span>
+                        <span class="status-badge success">Delivered</span>
+                    </div>
+                    <button class="btn btn-primary btn-sm">View order</button>
+                    <button class="btn btn-outline btn-sm">Reorder</button>
+                </div>
+            </div>
+            <div class="order-item">
+                <div class="order-info">
+                    <h4>PD-20240011 <span style="font-weight:400;color:var(--text-lighter);font-size:12px;">20/07/2026</span></h4>
+                    <p class="order-desc">Amoquin Tablets + 2 more items</p>
+                    <p class="order-price">₦11,395</p>
+                </div>
+                <div class="order-actions">
+                    <div class="order-status">
+                        <span class="status-badge success">Paid</span>
+                        <span class="status-badge warning">Shipped</span>
+                    </div>
+                    <button class="btn btn-primary btn-sm">View order</button>
+                    <button class="btn btn-outline btn-sm">Reorder</button>
+                </div>
+            </div>
+            <div class="order-item">
+                <div class="order-info">
+                    <h4>PD-20240010 <span style="font-weight:400;color:var(--text-lighter);font-size:12px;">10/07/2026</span></h4>
+                    <p class="order-desc">Brett Mouthwash Minty 250ml + 1 more item</p>
+                    <p class="order-price">₦6,285</p>
+                </div>
+                <div class="order-actions">
+                    <div class="order-status">
+                        <span class="status-badge success">Paid</span>
+                        <span class="status-badge success">Delivered</span>
+                    </div>
+                    <button class="btn btn-primary btn-sm">View order</button>
+                    <button class="btn btn-outline btn-sm">Reorder</button>
+                </div>
+            </div>
+            <div class="order-item">
+                <div class="order-info">
+                    <h4>PD-20240009 <span style="font-weight:400;color:var(--text-lighter);font-size:12px;">01/07/2026</span></h4>
+                    <p class="order-desc">Omepraz Capsules</p>
+                    <p class="order-price">₦4,313</p>
+                </div>
+                <div class="order-actions">
+                    <div class="order-status">
+                        <span class="status-badge pending">Pending</span>
+                        <span class="status-badge warning">Processing</span>
+                    </div>
+                    <button class="btn btn-primary btn-sm">View order</button>
+                    <button class="btn btn-outline btn-sm">Reorder</button>
+                </div>
+            </div>
+            <div class="order-item">
+                <div class="order-info">
+                    <h4>PD-20240008 <span style="font-weight:400;color:var(--text-lighter);font-size:12px;">15/06/2026</span></h4>
+                    <p class="order-desc">Garlic Tablets + 1 more item</p>
+                    <p class="order-price">₦6,234</p>
+                </div>
+                <div class="order-actions">
+                    <div class="order-status">
+                        <span class="status-badge danger">Failed</span>
+                        <span class="status-badge pending">Cancelled</span>
+                    </div>
+                    <button class="btn btn-primary btn-sm">View order</button>
+                    <button class="btn btn-outline btn-sm">Reorder</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Shop -->
+<div id="page-shop" class="page hidden">
+    <div class="customer-header">
+        <div class="container">
+            <a href="#" class="logo" onclick="navigateTo('')">
+                <div class="logo-text">PHARMA<br><span>DEKO</span> PLC</div>
+                <div class="logo-tagline">...Providing Healthy Solutions</div>
+            </a>
+            <div class="header-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search products, medicines, oral care...">
+            </div>
+            <div class="header-actions">
+                <a href="#" onclick="navigateTo('my-orders')"><i class="far fa-user"></i> My orders</a>
+                <a href="#cart" onclick="navigateTo('cart')"><i class="fas fa-shopping-cart"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="shop-hero">
+        <div class="container">
+            <h2>Order Pharma-Deko products directly</h2>
+            <p>Genuine medicines and healthcare products, manufactured at our Agbara facility.</p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="shop-layout">
+            <div class="shop-sidebar">
+                <p style="font-size:12px;color:var(--text-light);margin-bottom:16px;">28 products</p>
+                <div class="filter-group">
+                    <h4>CATEGORY</h4>
+                    <label class="filter-option"><input type="checkbox"> Oral Care</label>
+                    <label class="filter-option"><input type="checkbox"> Cough & Cold</label>
+                    <label class="filter-option"><input type="checkbox"> Vitamins & Supplements</label>
+                    <label class="filter-option"><input type="checkbox"> Haematinics</label>
+                    <label class="filter-option"><input type="checkbox"> Pain Relief</label>
+                    <label class="filter-option"><input type="checkbox"> Anti-malarials</label>
+                    <label class="filter-option"><input type="checkbox"> Suppositories</label>
+                    <label class="filter-option"><input type="checkbox"> Beverages</label>
+                    <label class="filter-option"><input type="checkbox"> Prescription drugs</label>
+                </div>
+                <div class="filter-group">
+                    <h4>FORMULATION</h4>
+                    <label class="filter-option"><input type="checkbox"> Tablet</label>
+                    <label class="filter-option"><input type="checkbox"> Syrup</label>
+                    <label class="filter-option"><input type="checkbox"> Liquid</label>
+                    <label class="filter-option"><input type="checkbox"> Suspension</label>
+                </div>
+            </div>
+            <div class="shop-grid">
+                <div class="shop-card">
+                    <div class="product-img placeholder-blue"></div>
+                    <div class="shop-card-content">
+                        <h4>Parkalin Pediatrics Syrup</h4>
+                        <span class="tag tag-yellow">Syrup</span> <span style="font-size:12px;color:var(--text-light);">100ml</span>
+                        <div class="price">₦1,850</div>
+                        <span class="status-badge success" style="margin-bottom:12px;display:inline-block;">In Stock</span>
+                        <div class="shop-card-actions">
+                            <button class="btn btn-primary btn-sm" onclick="addToCart('Parkalin Pediatrics Syrup', 1850)"><i class="fas fa-cart-plus"></i> Add to cart</button>
+                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="shop-card">
+                    <div class="product-img placeholder-green"></div>
+                    <div class="shop-card-content">
+                        <h4>Parkalin Chesty Syrup</h4>
+                        <span class="tag tag-yellow">Syrup</span> <span style="font-size:12px;color:var(--text-light);">100ml</span>
+                        <div class="price">₦2,100</div>
+                        <span class="status-badge success" style="margin-bottom:12px;display:inline-block;">In Stock</span>
+                        <div class="shop-card-actions">
+                            <button class="btn btn-primary btn-sm" onclick="addToCart('Parkalin Chesty Syrup', 2100)"><i class="fas fa-cart-plus"></i> Add to cart</button>
+                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="shop-card">
+                    <div class="product-img placeholder-red"></div>
+                    <div class="shop-card-content">
+                        <h4>Parkalin with Codeine</h4>
+                        <span class="tag tag-yellow">Syrup</span> <span style="font-size:12px;color:var(--text-light);">100ml</span>
+                        <div class="price">₦3,200</div>
+                        <span class="status-badge warning" style="margin-bottom:4px;display:inline-block;">Low Stock</span>
+                        <p class="prescription"><i class="fas fa-exclamation-triangle"></i> Prescription required</p>
+                        <div class="shop-card-actions">
+                            <button class="btn btn-primary btn-sm" onclick="addToCart('Parkalin with Codeine', 3200)"><i class="fas fa-cart-plus"></i> Add to cart</button>
+                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="shop-card">
+                    <div class="product-img placeholder-orange"></div>
+                    <div class="shop-card-content">
+                        <h4>Dekomol Paracetamol 500mg</h4>
+                        <span class="tag tag-blue">Tablet</span> <span style="font-size:12px;color:var(--text-light);">10 × 10 Blister</span>
+                        <div class="price">₦1,200</div>
+                        <span class="status-badge success" style="margin-bottom:12px;display:inline-block;">In Stock</span>
+                        <div class="shop-card-actions">
+                            <button class="btn btn-primary btn-sm" onclick="addToCart('Dekomol Paracetamol 500mg', 1200)"><i class="fas fa-cart-plus"></i> Add to cart</button>
+                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="shop-card">
+                    <div class="product-img placeholder-purple"></div>
+                    <div class="shop-card-content">
+                        <h4>Astyfer Blood Tonic</h4>
+                        <span class="tag tag-yellow">Syrup</span> <span style="font-size:12px;color:var(--text-light);">200ml</span>
+                        <div class="price">₦2,800</div>
+                        <span class="status-badge success" style="margin-bottom:12px;display:inline-block;">In Stock</span>
+                        <div class="shop-card-actions">
+                            <button class="btn btn-primary btn-sm" onclick="addToCart('Astyfer Blood Tonic', 2800)"><i class="fas fa-cart-plus"></i> Add to cart</button>
+                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="shop-card">
+                    <div class="product-img placeholder-blue"></div>
+                    <div class="shop-card-content">
+                        <h4>Dekovit Multivitamin Syrup</h4>
+                        <span class="tag tag-yellow">Syrup</span> <span style="font-size:12px;color:var(--text-light);">100ml</span>
+                        <div class="price">₦1,500</div>
+                        <span class="status-badge success" style="margin-bottom:12px;display:inline-block;">In Stock</span>
+                        <div class="shop-card-actions">
+                            <button class="btn btn-primary btn-sm" onclick="addToCart('Dekovit Multivitamin Syrup', 1500)"><i class="fas fa-cart-plus"></i> Add to cart</button>
+                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cart -->
+<div id="page-cart" class="page hidden">
+    <div class="customer-header">
+        <div class="container">
+            <a href="#" class="logo" onclick="navigateTo('')">
+                <div class="logo-text">PHARMA<br><span>DEKO</span> PLC</div>
+                <div class="logo-tagline">...Providing Healthy Solutions</div>
+            </a>
+            <div class="header-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search products, medicines, oral care...">
+            </div>
+            <div class="header-actions">
+                <a href="#" onclick="navigateTo('my-orders')"><i class="far fa-user"></i> My orders</a>
+                <a href="#cart" onclick="navigateTo('cart')"><i class="fas fa-shopping-cart"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="cart-page">
+        <div class="container">
+            <h2>Shopping Cart</h2>
+            <div class="cart-layout">
+                <div>
+                    <div class="cart-items" id="cart-items-container"></div>
+                    <div class="prescription-upload" id="prescription-section" style="display:none;">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Prescription Upload</h4>
+                        <p>Some items in your cart require a valid prescription. Upload here to proceed.</p>
+                        <div class="upload-zone">
+                            <i class="fas fa-cloud-upload-alt" style="font-size:24px;margin-bottom:8px;display:block;"></i>
+                            <span>Click or drag file to upload</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="cart-summary">
+                    <h3>Order summary</h3>
+                    <div class="summary-row"><span>Subtotal (3 items)</span><span id="cart-subtotal">₦7,150</span></div>
+                    <div class="summary-row"><span>Delivery fee</span><span>₦2,500</span></div>
+                    <div class="summary-row"><span>VAT (7.5%)</span><span id="cart-vat">₦724</span></div>
+                    <div class="summary-row total"><span>Total</span><span id="cart-total">₦10,374</span></div>
+                    <div class="promo-input">
+                        <input type="text" placeholder="Promo code">
+                        <button class="btn btn-primary">Apply</button>
+                    </div>
+                    <button class="btn btn-primary btn-full" onclick="navigateTo('checkout/delivery')">Proceed to checkout</button>
+                    <div class="payment-methods">
+                        <span><i class="fas fa-credit-card"></i> Card</span>
+                        <span><i class="fas fa-money-bill-wave"></i> Pay on delivery</span>
+                        <span><i class="fas fa-university"></i> Bank transfer</span>
+                    </div>
+                    <p style="font-size:11px;color:var(--text-lighter);text-align:center;margin-top:12px;">All products are genuine Pharma-Deko manufactured items. NAFDAC approved.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Checkout: Delivery -->
+<div id="page-checkout-delivery" class="page hidden">
+    <div class="customer-header">
+        <div class="container">
+            <a href="#" class="logo" onclick="navigateTo('')">
+                <div class="logo-text">PHARMA<br><span>DEKO</span> PLC</div>
+                <div class="logo-tagline">...Providing Healthy Solutions</div>
+            </a>
+            <div class="header-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search products, medicines, oral care...">
+            </div>
+            <div class="header-actions">
+                <a href="#" onclick="navigateTo('my-orders')"><i class="far fa-user"></i> My orders</a>
+                <a href="#cart" onclick="navigateTo('cart')"><i class="fas fa-shopping-cart"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="checkout-page">
+        <div class="container">
+            <div class="checkout-steps">
+                <div class="step active">
+                    <div class="step-circle">1</div>
+                    <span class="step-label">Delivery details</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step">
+                    <div class="step-circle">2</div>
+                    <span class="step-label">Review order</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step">
+                    <div class="step-circle">3</div>
+                    <span class="step-label">Payment</span>
+                </div>
+            </div>
+            <div class="checkout-layout">
+                <div class="checkout-form">
+                    <h3>Delivery details</h3>
+                    <form onsubmit="event.preventDefault(); navigateTo('checkout/review');">
+                        <div class="form-group">
+                            <label>Full name *</label>
+                            <input type="text" value="Olasunkanmi" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Phone number *</label>
+                                <input type="tel" value="2341111" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email *</label>
+                                <input type="email" value="olasunkanmi@email.com" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Street address *</label>
+                            <input type="text" value="Abuja" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>City *</label>
+                                <input type="text" value="Abuja" required>
+                            </div>
+                            <div class="form-group">
+                                <label>State *</label>
+                                <input type="text" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Delivery type *</label>
+                            <div class="delivery-options">
+                                <label class="delivery-option active">
+                                    <input type="radio" name="delivery" value="standard" checked>
+                                    <div class="delivery-info">
+                                        <strong>Standard delivery</strong>
+                                        <span>3-5 business days</span>
+                                    </div>
+                                    <span class="delivery-price">₦2,500</span>
+                                </label>
+                                <label class="delivery-option">
+                                    <input type="radio" name="delivery" value="express">
+                                    <div class="delivery-info">
+                                        <strong>Express delivery</strong>
+                                        <span>1-2 business days</span>
+                                    </div>
+                                    <span class="delivery-price">₦5,000</span>
+                                </label>
+                                <label class="delivery-option">
+                                    <input type="radio" name="delivery" value="pickup">
+                                    <div class="delivery-info">
+                                        <strong>Pickup from Agbara facility</strong>
+                                        <span>Available Mon-Fri, 8am-5pm</span>
+                                    </div>
+                                    <span class="delivery-price">Free</span>
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">Continue to Review →</button>
+                    </form>
+                </div>
+                <div class="cart-summary">
+                    <h3>Order summary</h3>
+                    <div id="checkout-summary">
+                        <div class="summary-row"><span>Parkalin Pediatrics Syrup × 1</span><span>₦1,850</span></div>
+                        <div class="summary-row"><span>Parkalin Chesty Syrup × 1</span><span>₦2,100</span></div>
+                        <div class="summary-row"><span>Parkalin with Codeine × 1</span><span>₦3,200</span></div>
+                        <div class="summary-row"><span>Subtotal</span><span>₦7,150</span></div>
+                        <div class="summary-row"><span>Delivery</span><span>₦2,500</span></div>
+                        <div class="summary-row"><span>VAT (7.5%)</span><span>₦724</span></div>
+                        <div class="summary-row total"><span>Total</span><span>₦10,374</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Checkout: Review -->
+<div id="page-checkout-review" class="page hidden">
+    <div class="customer-header">
+        <div class="container">
+            <a href="#" class="logo" onclick="navigateTo('')">
+                <div class="logo-text">PHARMA<br><span>DEKO</span> PLC</div>
+                <div class="logo-tagline">...Providing Healthy Solutions</div>
+            </a>
+            <div class="header-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search products, medicines, oral care...">
+            </div>
+            <div class="header-actions">
+                <a href="#" onclick="navigateTo('my-orders')"><i class="far fa-user"></i> My orders</a>
+                <a href="#cart" onclick="navigateTo('cart')"><i class="fas fa-shopping-cart"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="checkout-page">
+        <div class="container">
+            <div class="checkout-steps">
+                <div class="step completed">
+                    <div class="step-circle"><i class="fas fa-check"></i></div>
+                    <span class="step-label">Delivery details</span>
+                </div>
+                <div class="step-line completed"></div>
+                <div class="step active">
+                    <div class="step-circle">2</div>
+                    <span class="step-label">Review order</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step">
+                    <div class="step-circle">3</div>
+                    <span class="step-label">Payment</span>
+                </div>
+            </div>
+            <div class="checkout-layout">
+                <div class="checkout-form">
+                    <h3>Review order</h3>
+                    <div style="margin-bottom:24px;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                            <h4 style="font-size:14px;font-weight:600;">Items (3)</h4>
+                            <a href="#cart" onclick="navigateTo('cart')" style="font-size:13px;color:var(--primary);">Edit</a>
+                        </div>
+                        <div id="review-items">
+                            <div class="summary-row"><span>Parkalin Pediatrics Syrup × 2</span><span>₦3,700</span></div>
+                            <div class="summary-row"><span>Parkalin Chesty Syrup × 2</span><span>₦4,200</span></div>
+                            <div class="summary-row"><span>Parkalin with Codeine × 2</span><span>₦6,400</span></div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom:24px;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                            <h4 style="font-size:14px;font-weight:600;">Delivery address</h4>
+                            <a href="#checkout/delivery" onclick="navigateTo('checkout/delivery')" style="font-size:13px;color:var(--primary);">Edit</a>
+                        </div>
+                        <p style="font-size:13px;color:var(--text-light);">Abuja<br>Abuja, Wuse, Samuel Crescent</p>
+                    </div>
+                    <div style="margin-bottom:24px;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                            <h4 style="font-size:14px;font-weight:600;">Delivery method</h4>
+                            <a href="#checkout/delivery" onclick="navigateTo('checkout/delivery')" style="font-size:13px;color:var(--primary);">Edit</a>
+                        </div>
+                        <p style="font-size:13px;color:var(--text-light);"><i class="fas fa-truck" style="margin-right:6px;"></i>Standard Delivery (3-5 Days)</p>
+                    </div>
+                    <button class="btn btn-primary btn-full" onclick="navigateTo('checkout/payment')">Confirm & proceed to payment →</button>
+                </div>
+                <div class="cart-summary">
+                    <h3>Order summary</h3>
+                    <div id="checkout-summary-review">
+                        <div class="summary-row"><span>Parkalin Pediatrics Syrup × 2</span><span>₦3,700</span></div>
+                        <div class="summary-row"><span>Parkalin Chesty Syrup × 2</span><span>₦4,200</span></div>
+                        <div class="summary-row"><span>Parkalin with Codeine × 2</span><span>₦6,400</span></div>
+                        <div class="summary-row"><span>Subtotal</span><span>₦14,300</span></div>
+                        <div class="summary-row"><span>Delivery</span><span>₦2,500</span></div>
+                        <div class="summary-row"><span>VAT (7.5%)</span><span>₦1,260</span></div>
+                        <div class="summary-row total"><span>Total</span><span>₦18,060</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Checkout: Payment -->
+<div id="page-checkout-payment" class="page hidden">
+    <div class="customer-header">
+        <div class="container">
+            <a href="#" class="logo" onclick="navigateTo('')">
+                <div class="logo-text">PHARMA<br><span>DEKO</span> PLC</div>
+                <div class="logo-tagline">...Providing Healthy Solutions</div>
+            </a>
+            <div class="header-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search products, medicines, oral care...">
+            </div>
+            <div class="header-actions">
+                <a href="#" onclick="navigateTo('my-orders')"><i class="far fa-user"></i> My orders</a>
+                <a href="#cart" onclick="navigateTo('cart')"><i class="fas fa-shopping-cart"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="checkout-page">
+        <div class="container">
+            <div class="checkout-steps">
+                <div class="step completed">
+                    <div class="step-circle"><i class="fas fa-check"></i></div>
+                    <span class="step-label">Delivery details</span>
+                </div>
+                <div class="step-line completed"></div>
+                <div class="step completed">
+                    <div class="step-circle"><i class="fas fa-check"></i></div>
+                    <span class="step-label">Review order</span>
+                </div>
+                <div class="step-line completed"></div>
+                <div class="step active">
+                    <div class="step-circle">3</div>
+                    <span class="step-label">Payment</span>
+                </div>
+            </div>
+            <div class="checkout-layout">
+                <div class="checkout-form">
+                    <h3>Payment</h3>
+                    <div class="delivery-options">
+                        <label class="delivery-option">
+                            <input type="radio" name="payment" value="card">
+                            <div class="delivery-info">
+                                <strong>Pay by card</strong>
+                                <span>Secure payment via Paystack/Flutterwave</span>
+                            </div>
+                        </label>
+                        <label class="delivery-option active">
+                            <input type="radio" name="payment" value="bank" checked>
+                            <div class="delivery-info">
+                                <strong>Bank transfer</strong>
+                                <span>Bank: First Bank of Nigeria<br>Account name: Pharma-Deko Plc<br>Account: 0123456789 <i class="far fa-copy" style="cursor:pointer;"></i><br><small>Use your order reference as payment description.</small></span>
+                            </div>
+                        </label>
+                        <label class="delivery-option" style="opacity:0.5;">
+                            <input type="radio" name="payment" value="cod" disabled>
+                            <div class="delivery-info">
+                                <strong>Pay on delivery</strong>
+                                <span>Only available for Lagos and Ogun State (minimum order ₦10,000)</span>
+                            </div>
+                        </label>
+                    </div>
+                    <button class="btn btn-primary btn-full" id="place-order-btn" onclick="navigateTo('order-success')" style="margin-top:24px;">Place order — ₦18,060</button>
+                </div>
+                <div class="cart-summary">
+                    <h3>Order summary</h3>
+                    <div>
+                        <div class="summary-row"><span>Parkalin Pediatrics Syrup × 2</span><span>₦3,700</span></div>
+                        <div class="summary-row"><span>Parkalin Chesty Syrup × 2</span><span>₦4,200</span></div>
+                        <div class="summary-row"><span>Parkalin with Codeine × 2</span><span>₦6,400</span></div>
+                        <div class="summary-row"><span>Subtotal</span><span>₦14,300</span></div>
+                        <div class="summary-row"><span>Delivery</span><span>₦2,500</span></div>
+                        <div class="summary-row"><span>VAT (7.5%)</span><span>₦1,260</span></div>
+                        <div class="summary-row total"><span>Total</span><span>₦18,060</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Order Success -->
+<div id="page-order-success" class="page hidden">
+    <div class="customer-header">
+        <div class="container">
+            <a href="#" class="logo" onclick="navigateTo('')">
+                <div class="logo-text">PHARMA<br><span>DEKO</span> PLC</div>
+                <div class="logo-tagline">...Providing Healthy Solutions</div>
+            </a>
+            <div class="header-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search products, medicines, oral care...">
+            </div>
+            <div class="header-actions">
+                <a href="#" onclick="navigateTo('my-orders')"><i class="far fa-user"></i> My orders</a>
+                <a href="#cart" onclick="navigateTo('cart')"><i class="fas fa-shopping-cart"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="success-page">
+        <div class="success-card">
+            <div class="success-icon"><i class="fas fa-check"></i></div>
+            <h2>Order placed successfully!</h2>
+            <p>Thank you for ordering from Pharma-Deko Plc, Olasunkanmi. Your order has been received and is being processed.</p>
+            <div class="order-ref">
+                <span>Order reference</span>
+                <strong>PD-90218312</strong>
+            </div>
+            <div class="success-details-grid">
+                <div class="success-detail">
+                    <h5>Total paid</h5>
+                    <p>₦18,060</p>
+                </div>
+                <div class="success-detail">
+                    <h5>Delivery state</h5>
+                    <p>Abuja</p>
+                </div>
+                <div class="success-detail">
+                    <h5>Delivery method</h5>
+                    <p>Standard Delivery</p>
+                </div>
+                <div class="success-detail">
+                    <h5>Estimated delivery</h5>
+                    <p>29/07/2026 – 31/07/2026</p>
+                </div>
+            </div>
+            <div class="tracker">
+                <div class="tracker-step">
+                    <div class="icon"><i class="fas fa-check"></i></div>
+                    <span class="tracker-label">Order received</span>
+                </div>
+                <div class="tracker-line active"></div>
+                <div class="tracker-step pending">
+                    <div class="icon"><i class="fas fa-box"></i></div>
+                    <span class="tracker-label">Processing</span>
+                </div>
+                <div class="tracker-line"></div>
+                <div class="tracker-step pending">
+                    <div class="icon"><i class="fas fa-check-circle"></i></div>
+                    <span class="tracker-label">Delivered</span>
+                </div>
+            </div>
+            <div style="display:flex;gap:12px;justify-content:center;">
+                <button class="btn btn-primary" onclick="navigateTo('my-orders')">View my order</button>
+                <button class="btn btn-outline" onclick="navigateTo('shop')">Continue shopping</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
