@@ -26,6 +26,7 @@ function navigateTo(path) {
 }
 
 function handleRoute() {
+    if (typeof closeMobileNav === 'function') closeMobileNav();
     const hash = window.location.hash.replace('#', '').replace(/^\//, '');
     const pageId = routes[hash] || 'page-home';
 
@@ -53,6 +54,81 @@ function handleRoute() {
 
 window.addEventListener('hashchange', handleRoute);
 window.addEventListener('DOMContentLoaded', handleRoute);
+
+// ==================== MOBILE NAV ====================
+const MOBILE_NAV_BREAKPOINT = 1024;
+
+function isMobileNavOpen() {
+    const nav = document.getElementById('main-nav');
+    return !!nav && nav.classList.contains('open');
+}
+
+function openMobileNav() {
+    const nav = document.getElementById('main-nav');
+    const toggle = document.getElementById('nav-toggle');
+    const backdrop = document.getElementById('nav-backdrop');
+    if (!nav) return;
+
+    nav.classList.add('open');
+    if (toggle) {
+        toggle.classList.add('open');
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.setAttribute('aria-label', 'Close menu');
+    }
+    if (backdrop) {
+        backdrop.hidden = false;
+        // Next frame so the opacity transition runs
+        requestAnimationFrame(() => backdrop.classList.add('open'));
+    }
+    document.body.classList.add('nav-open');
+
+    const firstLink = nav.querySelector('a');
+    if (firstLink) firstLink.focus();
+}
+
+function closeMobileNav() {
+    const nav = document.getElementById('main-nav');
+    const toggle = document.getElementById('nav-toggle');
+    const backdrop = document.getElementById('nav-backdrop');
+    if (!nav || !nav.classList.contains('open')) return;
+
+    nav.classList.remove('open');
+    if (toggle) {
+        toggle.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', 'Open menu');
+    }
+    if (backdrop) {
+        backdrop.classList.remove('open');
+        setTimeout(() => {
+            if (!isMobileNavOpen()) backdrop.hidden = true;
+        }, 250);
+    }
+    document.body.classList.remove('nav-open');
+}
+
+function toggleMobileNav() {
+    if (isMobileNavOpen()) closeMobileNav();
+    else openMobileNav();
+}
+
+// Close after picking a destination
+document.addEventListener('click', function(e) {
+    if (e.target.closest('.main-nav a')) closeMobileNav();
+});
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && isMobileNavOpen()) {
+        closeMobileNav();
+        const toggle = document.getElementById('nav-toggle');
+        if (toggle) toggle.focus();
+    }
+});
+
+// Reset state when the viewport grows back to the desktop layout
+window.addEventListener('resize', function() {
+    if (window.innerWidth > MOBILE_NAV_BREAKPOINT) closeMobileNav();
+});
 
 // ==================== AUTH MODAL ====================
 function openAuthModal() {
