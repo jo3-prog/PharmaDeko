@@ -38,6 +38,7 @@ function handleRoute() {
     if (target) {
         target.classList.remove('hidden');
         window.scrollTo(0, 0);
+        if (typeof updateHeaderOnScroll === 'function') updateHeaderOnScroll();
     }
 
     // Update nav active states
@@ -54,6 +55,31 @@ function handleRoute() {
 
 window.addEventListener('hashchange', handleRoute);
 window.addEventListener('DOMContentLoaded', handleRoute);
+
+// ==================== STICKY HEADER ====================
+// Header starts transparent over the hero and turns solid white once the page
+// is scrolled past 15% of the viewport height.
+const HEADER_SCROLL_RATIO = 0.15;
+
+function updateHeaderOnScroll() {
+    const header = document.querySelector('.main-header');
+    if (!header) return;
+    const threshold = window.innerHeight * HEADER_SCROLL_RATIO;
+    header.classList.toggle('scrolled', window.scrollY > threshold);
+}
+
+let headerScrollTicking = false;
+window.addEventListener('scroll', function() {
+    if (headerScrollTicking) return;
+    headerScrollTicking = true;
+    requestAnimationFrame(function() {
+        updateHeaderOnScroll();
+        headerScrollTicking = false;
+    });
+}, { passive: true });
+
+window.addEventListener('resize', updateHeaderOnScroll);
+window.addEventListener('DOMContentLoaded', updateHeaderOnScroll);
 
 // ==================== MOBILE NAV ====================
 const MOBILE_NAV_BREAKPOINT = 1024;
