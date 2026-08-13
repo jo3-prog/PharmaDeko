@@ -586,6 +586,19 @@ textarea {
 	position: sticky;
 	top: 0;
 	z-index: 100;
+	background: transparent;
+	transition:
+		background-color 0.3s ease,
+		box-shadow 0.3s ease;
+}
+/* Solid once the page is scrolled past 15% of the viewport */
+.main-header.scrolled {
+	background: white;
+	border-bottom: 1px solid var(--border-light);
+	box-shadow: var(--shadow);
+}
+.main-header.scrolled .header-search input {
+	background-color: var(--bg-light);
 }
 .header-inner {
 	display: flex;
@@ -697,7 +710,9 @@ textarea {
 	height: 2px;
 	border-radius: 2px;
 	background: var(--text);
-	transition: transform 0.25s ease, opacity 0.2s ease;
+	transition:
+		transform 0.25s ease,
+		opacity 0.2s ease;
 }
 .nav-toggle-bars::before,
 .nav-toggle-bars::after {
@@ -1043,8 +1058,7 @@ body.nav-open {
 
 /* Quality */
 .quality-grid {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
+	display: flex;
 	gap: 60px;
 	align-items: center;
 }
@@ -1128,8 +1142,8 @@ body.nav-open {
 
 /* Distribution */
 .distribution-grid {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
+	display: flex;
+	/* grid-template-columns: 1fr 1fr; */
 	gap: 60px;
 	align-items: center;
 }
@@ -1170,6 +1184,11 @@ body.nav-open {
 }
 .distribution-map {
 	position: relative;
+}
+.distribution-map img {
+	/* width: 100%; */
+	/* height: 400px; */
+	background-size: contain;
 }
 
 /* News */
@@ -2438,6 +2457,18 @@ body.nav-open {
 	}
 	.nav-backdrop {
 		display: block;
+	}
+	.quality-grid {
+		flex-direction: column;
+	}
+	.quality-image img {
+		width: 100%;
+	}
+	.distribution-grid {
+		flex-direction: column;
+	}
+	.distribution-map img {
+		width: 100%;
 	}
 	.main-nav {
 		position: fixed;
